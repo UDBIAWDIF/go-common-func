@@ -8,47 +8,47 @@ import (
 func TestRunner(t *testing.T) {
 	runner := NewRunner()
 	errMsg := ""
-	runner.exec(func() bool {
+	runner.Exec(func() bool {
 		errMsg = "Step 1 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 2 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 3 error"
 		return false
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 4 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 5 error"
 		return true
-	}).success(func() {
+	}).Success(func() {
 		t.Log("All success")
-	}).failed(func() {
+	}).Failed(func() {
 		t.Log("Failed! reason: {}", errMsg)
 	})
 
 	runner = NewRunner()
 	errMsg = ""
-	runner.exec(func() bool {
+	runner.Exec(func() bool {
 		errMsg = "Step 1 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 2 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 3 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 4 error"
 		return true
-	}).exec(func() bool {
+	}).Exec(func() bool {
 		errMsg = "Step 5 error"
 		return true
-	}).success(func() {
+	}).Success(func() {
 		t.Log("All success")
-	}).failed(func() {
+	}).Failed(func() {
 		t.Log("Failed! reason: {}", errMsg)
 	})
 }

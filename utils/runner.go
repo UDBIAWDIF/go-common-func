@@ -17,21 +17,21 @@ func (_this *Runner) IsRunnable() bool {
 	return _this.Runnable
 }
 
-func (_this *Runner) exec(runnerFunc RunnerFunc) *Runner {
+func (_this *Runner) Exec(runnerFunc RunnerFunc) *Runner {
 	if _this.IsRunnable() {
 		_this.Runnable = runnerFunc()
 	}
 	return _this
 }
 
-func (_this *Runner) success(runnerFunc RunnerFinishFunc) *Runner {
+func (_this *Runner) Success(runnerFunc RunnerFinishFunc) *Runner {
 	if _this.IsRunnable() {
 		runnerFunc()
 	}
 	return _this
 }
 
-func (_this *Runner) failed(runnerFunc RunnerFinishFunc) *Runner {
+func (_this *Runner) Failed(runnerFunc RunnerFinishFunc) *Runner {
 	if !_this.IsRunnable() {
 		runnerFunc()
 	}
