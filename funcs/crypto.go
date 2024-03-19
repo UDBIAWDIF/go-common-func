@@ -525,7 +525,7 @@ func Long2IP(ip uint32) string {
 }
 
 // Contains item is in map/slice/array
-func Contains(haystack interface{}, needle interface{}) bool {
+func ContainsInterface(haystack interface{}, needle interface{}) bool {
 	targetValue := reflect.ValueOf(haystack)
 	switch reflect.TypeOf(haystack).Kind() {
 	case reflect.Slice, reflect.Array:

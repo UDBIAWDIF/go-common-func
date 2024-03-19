@@ -1,5 +1,7 @@
 package funcs
 
+import "reflect"
+
 type SliceType interface{ comparable }
 
 func SliceFilter[T SliceType](sliceToFilter []T, filterFunc func(item T) bool) []T {
@@ -15,4 +17,13 @@ func SliceFilter[T SliceType](sliceToFilter []T, filterFunc func(item T) bool) [
 
 func SliceGetEnd[T any](list []T) T {
 	return list[len(list)-1]
+}
+
+func Contains[E comparable](s []E, e E) bool {
+	for _, v := range s {
+		if reflect.DeepEqual(v, e) {
+			return true
+		}
+	}
+	return false
 }
