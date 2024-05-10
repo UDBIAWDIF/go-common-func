@@ -102,3 +102,11 @@ func StrToSnakeCase(str string) string {
 	snake = MATCH_ALL_CAP.ReplaceAllString(snake, "${1}_${2}")  //拆分单词
 	return strings.ToLower(snake)                               //全部转小写
 }
+
+// 下划线转小驼峰
+func ToCamelCase(s string) string {
+	toCamelCase := regexp.MustCompile(`_([a-zA-Z0-9])`).ReplaceAllStringFunc(s, func(str string) string {
+		return strings.ToUpper(str[1:])
+	})
+	return toCamelCase
+}
