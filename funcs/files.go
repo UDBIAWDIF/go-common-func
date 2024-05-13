@@ -1,6 +1,7 @@
 package funcs
 
 import (
+	"archive/zip"
 	"bufio"
 	"fmt"
 	"image"
@@ -9,7 +10,6 @@ import (
 	"image/png"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -110,7 +110,7 @@ func ReadFileAll(filename string) (content []byte, err error) {
 	}
 
 	if runnable {
-		content, err = ioutil.ReadAll(hFile)
+		content, err = io.ReadAll(hFile)
 		if err != nil {
 			runnable = false
 		}
@@ -144,5 +144,70 @@ func MakeDirs(path string) error {
 func WriteFile(fileFullName string, content []byte) error {
 	dir, _ := filepath.Split(fileFullName)
 	MakeDirs(dir)
-	return ioutil.WriteFile(fileFullName, content, 0644)
+	return os.WriteFile(fileFullName, content, 0644)
+}
+
+// 将指定目录下的所有文件压缩成一个zip文件
+func ZipDirFiles(zipFile, dir string) error {
+	zipFileHandle, err := os.Create(zipFile)
+	if err != nil {
+		return err
+	}
+	defer zipFileHandle.Close()
+
+	archiveWriter := zip.NewWriter(zipFileHandle)
+	defer archiveWriter.Close()
+
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+
+		header.Name = filepath.ToSlash(path)
+
+		if info.IsDir() {
+			header.Name += "/"
+		} else {
+			header.Method = zip.Deflate
+		}
+
+		writer, err := archiveWriter.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			file, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			defer file.Close()
+			io.Copy(writer, file)
+		}
+		return err
+	})
+
+	return err
+}
+
+// 将指定目录下的所有文件压缩成一个zip文件
+func ZipContent(zipFile string, fileName string, content []byte) error {
+	zipFileHandle, err := os.Create(zipFile)
+	if err != nil {
+		return err
+	}
+	defer zipFileHandle.Close()
+
+	archiveWriter := zip.NewWriter(zipFileHandle)
+	defer archiveWriter.Close()
+
+	fileWriter, _ := archiveWriter.Create(fileName)
+	fileWriter.Write(content)
+
+	return err
 }
