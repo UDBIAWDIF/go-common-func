@@ -211,3 +211,28 @@ func ZipContent(zipFile string, fileName string, content []byte) error {
 
 	return err
 }
+
+// 解压zip文件里第一个文件(用于只压缩了一个文件的zip包, 经常会碰到, 避免再输入文件名)
+func UnZipFirstFile(zipFile string) ([]byte, error) {
+	var content []byte
+	archive, err := zip.OpenReader(zipFile)
+	if err != nil {
+		panic(err)
+	}
+	defer archive.Close()
+
+	for _, fileInArchive := range archive.File {
+		var fileRead io.ReadCloser
+		fileRead, err = fileInArchive.Open()
+		if err != nil {
+			break
+		}
+
+		content = make([]byte, fileInArchive.UncompressedSize64)
+		_, err = fileRead.Read(content)
+		fileRead.Close()
+		break
+	}
+
+	return content, err
+}
