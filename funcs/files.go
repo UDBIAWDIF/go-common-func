@@ -228,8 +228,7 @@ func UnZipFirstFile(zipFile string) ([]byte, error) {
 			break
 		}
 
-		content = make([]byte, fileInArchive.UncompressedSize64)
-		_, err = fileRead.Read(content)
+		content, err = io.ReadAll(fileRead)
 		fileRead.Close()
 		break
 	}
