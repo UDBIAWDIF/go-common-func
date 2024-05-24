@@ -44,5 +44,5 @@ func IsProcessRunningLinux(pid int) bool {
 
 func IsProcessRunningWin(pid int) bool {
 	pids, _ := process.Pids()
-	return Contains(pids, int32(pid))
+	return SliceContains(pids, int32(pid))
 }
