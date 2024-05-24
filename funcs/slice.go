@@ -39,3 +39,11 @@ func SliceRemoveDuplicateElement[T SliceType](sliceToRemoveDuplicate []T) []T {
 	}
 	return result
 }
+
+func SliceCovertToInterface[T any](sliceToCovert []T) []interface{} {
+	result := make([]interface{}, 0, len(sliceToCovert))
+	for _, item := range sliceToCovert {
+		result = append(result, item)
+	}
+	return result
+}
