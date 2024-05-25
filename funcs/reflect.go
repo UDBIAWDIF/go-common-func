@@ -12,6 +12,35 @@ func ReflectGetFieldValue[T any](data interface{}, fieldName string) T {
 	return dataValue.FieldByName(fieldName).Interface().(T)
 }
 
+// 设置指定属性的值
+func ReflectSetFieldValue[T any](dst interface{}, fieldName string, value T) error {
+	runnable := true
+	var err error = nil
+	// 防止意外panic
+	defer func() {
+		if e := recover(); e != nil {
+			err = fmt.Errorf("%v", e)
+		}
+	}()
+
+	dstType, dstValue := reflect.TypeOf(dst), reflect.ValueOf(dst)
+	// dst必须结构体指针类型
+	if dstType.Kind() != reflect.Ptr || dstType.Elem().Kind() != reflect.Struct {
+		err = errors.New("dst type should be a struct pointer")
+		runnable = false
+	}
+
+	if runnable {
+		dstValue = dstValue.Elem()
+		fieldToSet := dstValue.FieldByName(fieldName)
+		if fieldToSet.CanSet() {
+			fieldToSet.Set(reflect.ValueOf(value))
+		}
+	}
+
+	return err
+}
+
 // 属性复制
 func ReflectCopyProperties(dst, src interface{}) (err error) {
 	// 防止意外panic
