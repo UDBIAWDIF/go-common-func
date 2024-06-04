@@ -31,3 +31,13 @@ func StructToStringMap(input interface{}) map[string]interface{} {
 func StructToOrderedMap(input interface{}) *orderedmap.OrderedMap {
 	return MapToOrderedMap(StructToStringMap(input))
 }
+
+// map 里的key从驼峰转下划线
+// 主要用于查询条件转成实际数据库字段名
+func MapKeyToSnakeCase(fromMap map[string]any) map[string]any {
+	toMap := map[string]any{}
+	for curKey, curVal := range fromMap {
+		toMap[StrToSnakeCase(curKey)] = curVal
+	}
+	return toMap
+}

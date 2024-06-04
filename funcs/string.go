@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 	"unsafe"
 
 	"github.com/axgle/mahonia"
@@ -109,4 +110,25 @@ func ToCamelCase(s string) string {
 		return strings.ToUpper(str[1:])
 	})
 	return toCamelCase
+}
+
+// 下划线转大驼峰
+func ToCamelCaseUcFirst(str string) string {
+	return UcFirst(ToCamelCase(str))
+}
+
+// 首字母大写
+func UcFirst(str string) string {
+	for idx, eachLetter := range str {
+		return string(unicode.ToUpper(eachLetter)) + str[idx+1:]
+	}
+	return ""
+}
+
+// 首字母小写
+func LcFirst(str string) string {
+	for idx, eachLetter := range str {
+		return string(unicode.ToLower(eachLetter)) + str[idx+1:]
+	}
+	return ""
 }
