@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"gitee.com/uid/go-common-func/funcs"
+	"time"
 )
 
 const DATA_PLACE_HOLE = "_DATA_PLACE_HOLE_"
@@ -50,7 +49,7 @@ func (_l *RotateLog) Write(p []byte) (int, error) {
 
 // 确保日志文件正常建立
 func (_l *RotateLog) makeSureLogFile() {
-	today := funcs.TodayDate()
+	today := time.Now().Format("2006-01-02")
 	for {
 		if !_l.lock.TryLock() {
 			continue
@@ -67,7 +66,7 @@ func (_l *RotateLog) makeSureLogFile() {
 				}()
 			}
 
-			funcs.MakeDirs(_l.logDir)
+			os.MkdirAll(_l.logDir, os.ModePerm)
 			logFileName := strings.Replace(_l.fileTpl, DATA_PLACE_HOLE, today, 1)
 			logFilePath := fmt.Sprintf("%s/%s", _l.logDir, logFileName)
 			_l.fileHandle, _ = os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
