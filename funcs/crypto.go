@@ -402,6 +402,11 @@ func TimeFormat(t time.Time, f int) (timeStr string) {
 	return
 }
 
+// 秒数转换成具体的时间
+func SecondsToTimeFormat(seconds, f int) (timeStr string) {
+	return TimeFormat(time.Unix(int64(seconds), 0), f)
+}
+
 // Now format now
 func Now(f ...int) string {
 	var format int
