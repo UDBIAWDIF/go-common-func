@@ -65,3 +65,8 @@ func SliceCovertToMap[KEY_TYPE comparable, DATA_TYPE any](sliceToCovert []DATA_T
 	}
 	return result
 }
+
+// 删除切片里的一段, 从 from 到 to 的元素将被删除
+func SliceRemoveRange[DATA_TYPE any](sliceToRemove []DATA_TYPE, from, to int) []DATA_TYPE {
+	return append(sliceToRemove[:from], sliceToRemove[to+1:]...)
+}
