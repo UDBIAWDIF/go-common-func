@@ -20,9 +20,25 @@ func StringToInt64(e string) (int64, error) {
 	return strconv.ParseInt(e, 10, 64)
 }
 
+// 字符串转 int64, 不检测是否错误
+func StringToInt64NotError(e string) int64 {
+	val, _ := StringToInt64(e)
+	return val
+}
+
+func StringToUInt64(e string) (uint64, error) {
+	return strconv.ParseUint(e, 10, 64)
+}
+
+// 字符串转 uint64, 不检测是否错误
+func StringToUInt64NotError(e string) uint64 {
+	val, _ := StringToUInt64(e)
+	return val
+}
+
 // 字符串转float64
 func StringToFloat64(e string) (float64, error) {
-	return strconv.ParseFloat(e, 10)
+	return strconv.ParseFloat(e, 64)
 }
 
 // 字符串转float64, 不检测是否错误
@@ -33,6 +49,12 @@ func StringToFloat64NotError(e string) float64 {
 
 func StringToInt(e string) (int, error) {
 	return strconv.Atoi(e)
+}
+
+// 字符串转 int, 不检测是否错误
+func StringToIntNotError(e string) int {
+	val, _ := StringToInt(e)
+	return val
 }
 
 func StringToBool(e string) (bool, error) {

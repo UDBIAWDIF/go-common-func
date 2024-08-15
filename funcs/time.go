@@ -171,3 +171,19 @@ func IsDateTime(dateTimeStr string) bool {
 	re := regexp.MustCompile(`^d{4}-d{2}-d{2} (0?[1-9]|1[0-2])(:[0-5]d){2}$`)
 	return re.MatchString(dateTimeStr)
 }
+
+// 两个字符串时期的时间差(秒)
+func StrTimeDifferenceSeconds(strTime1, strTime2 string) (difference int, err error) {
+	time1, time1Err := StrToTime(strTime1)
+	time2, time2Err := StrToTime(strTime2)
+
+	if err = time1Err; err == nil {
+		err = time2Err
+	}
+
+	if err == nil {
+		difference = int(time1.Sub(time2).Seconds())
+	}
+
+	return
+}
