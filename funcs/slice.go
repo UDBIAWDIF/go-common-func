@@ -66,6 +66,24 @@ func SliceCovertToMap[KEY_TYPE comparable, DATA_TYPE any](sliceToCovert []DATA_T
 	return result
 }
 
+// 切片 转换成 map[key]同一key的列表
+// 一般用于快速找到特定数据
+// 比如查询出来的数据列表, 用ID做 map 的 key
+// 使用者可以很方便的找到 ID 对应的数据
+// 不需要去遍历整个列表
+func SliceCovertToMapSlice[KEY_TYPE comparable, DATA_TYPE any](sliceToCovert []DATA_TYPE, keyName string) map[KEY_TYPE][]DATA_TYPE {
+	result := map[KEY_TYPE][]DATA_TYPE{}
+	for _, curItem := range sliceToCovert {
+		curItemValue := reflect.ValueOf(curItem)
+		keyField := curItemValue.FieldByName(keyName)
+		if keyField.Kind() == reflect.Ptr { //类型为指针 需要取elem
+			keyField = keyField.Elem()
+		}
+		result[keyField.Interface().(KEY_TYPE)] = append(result[keyField.Interface().(KEY_TYPE)], curItem)
+	}
+	return result
+}
+
 // 删除切片里的一段, 从 from 到 to 的元素将被删除
 func SliceRemoveRange[DATA_TYPE any](sliceToRemove []DATA_TYPE, from, to int) []DATA_TYPE {
 	return append(sliceToRemove[:from], sliceToRemove[to+1:]...)
