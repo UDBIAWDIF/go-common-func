@@ -384,40 +384,6 @@ func Authcode(text string, params AuthcodeParam) (str string, err error) {
 	return
 }
 
-// TimeFormat format time.Time
-func TimeFormat(t time.Time, f int) (timeStr string) {
-	switch f {
-	case 0:
-		timeStr = t.Format("2006-01-02 15:04:05")
-	case 1:
-		timeStr = t.Format("2006-01-02")
-	case 2:
-		timeStr = t.Format("15:04:05")
-	case 3:
-		timeStr = t.Format("20060102150405")
-	case 4:
-		timeStr = t.Format("2006-01-02 15:04")
-	}
-
-	return
-}
-
-// 秒数转换成具体的时间
-func SecondsToTimeFormat(seconds, f int) (timeStr string) {
-	return TimeFormat(time.Unix(int64(seconds), 0), f)
-}
-
-// Now format now
-func Now(f ...int) string {
-	var format int
-	if len(f) > 0 {
-		format = f[0]
-	} else {
-		format = 0
-	}
-	return TimeFormat(time.Now(), format)
-}
-
 // StructToMap struct convert to map
 func StructToMap(item interface{}) map[string]interface{} {
 	res := map[string]interface{}{}
