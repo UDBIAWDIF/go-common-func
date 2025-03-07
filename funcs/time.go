@@ -188,6 +188,34 @@ func StrTimeDifferenceSeconds(strTime1, strTime2 string) (difference int, err er
 	return
 }
 
+// 两个字符串时期的时间差(秒)
+func StrTimeDifferenceSecondsNoError(strTime1, strTime2 string) (difference int) {
+	difference, _ = StrTimeDifferenceSeconds(strTime1, strTime2)
+	return
+}
+
+// 两个字符串日期的时间差(天)
+func StrDateDifferenceDays(strTime1, strTime2 string) (difference int, err error) {
+	time1, time1Err := StrToTime(strTime1)
+	time2, time2Err := StrToTime(strTime2)
+
+	if err = time1Err; err == nil {
+		err = time2Err
+	}
+
+	if err == nil {
+		difference = int(time1.Sub(time2).Hours() / 24)
+	}
+
+	return
+}
+
+// 两个字符串日期的时间差(天)
+func StrDateDifferenceDaysNoError(strTime1, strTime2 string) (difference int) {
+	difference, _ = StrDateDifferenceDays(strTime1, strTime2)
+	return
+}
+
 // TimeFormat format time.Time
 // 0: "2006-01-02 15:04:05"
 // 1: "2006-01-02"
