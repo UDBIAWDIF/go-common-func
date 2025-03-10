@@ -8,7 +8,7 @@ import (
 )
 
 // 普通的MAP转换成有序MAP(顺手按KEY升序排序)
-func MapToOrderedMap(input map[string]interface{}) *orderedmap.OrderedMap {
+func MapToOrderedMap[VAL any](input map[string]VAL) *orderedmap.OrderedMap {
 	output := orderedmap.New()
 	output.SetEscapeHTML(false)
 	if input != nil {
@@ -40,4 +40,25 @@ func MapKeyToSnakeCase(fromMap map[string]any) map[string]any {
 		toMap[StrToSnakeCase(curKey)] = curVal
 	}
 	return toMap
+}
+
+func MapToSlice[M_KEY comparable, VAL any](fromMap map[M_KEY]VAL) []VAL {
+	slice := make([]VAL, 0, len(fromMap))
+	for _, val := range fromMap {
+		slice = append(slice, val)
+	}
+
+	return slice
+}
+
+func OrderMapToSlice[VAL any](fromMap *orderedmap.OrderedMap) []VAL {
+	slice := make([]VAL, 0, len(fromMap.Keys()))
+	for _, mapKey := range fromMap.Keys() {
+		val, exists := fromMap.Get(mapKey)
+		if exists {
+			slice = append(slice, val.(VAL))
+		}
+	}
+
+	return slice
 }
